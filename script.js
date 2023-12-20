@@ -130,18 +130,6 @@ updateScrollingSpeed();
 // Update on window resize
 window.addEventListener("resize", updateScrollingSpeed);
 
-// hero animation on scroll
-gsap.to(".section.is--hero", {
-  scrollTrigger: {
-    trigger: ".section.is--hero",
-    start: "top top",
-    end: "bottom top",
-    scrub: true,
-    markers: false,
-  },
-  scale: 0.8,
-});
-
 gsap.utils.toArray("[animation=split-fade]").forEach((container) => {
   const splitFadeElements = container.querySelectorAll(".animation-split-fade");
 
