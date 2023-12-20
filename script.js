@@ -115,7 +115,7 @@ pageLoad();
 const scrollSpeed = 50; // pixels per second, adjust as needed
 
 function updateScrollingSpeed() {
-  document.querySelectorAll(".marquee--row").forEach((element) => {
+  document.querySelectorAll(".is--scrolling").forEach((element) => {
     const scrollWidth = element.offsetWidth;
     const duration = scrollWidth / scrollSpeed; // seconds
 
