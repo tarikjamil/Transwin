@@ -33,38 +33,38 @@ window.addEventListener("resize", function () {
 gsap.registerPlugin(ScrollTrigger, CustomEase);
 
 let smoother;
-function handleScrollSmoother() {
-  if (window.innerWidth >= 991) {
-    if (smoother) {
-      smoother.destroy(); // Destroy existing instance if it exists
-    }
+
+function initializeScrollSmoother() {
+  if (!smoother) {
     gsap.registerPlugin(ScrollSmoother);
     smoother = ScrollSmoother.create({
       smooth: 1,
       effects: true,
     });
-  } else {
-    if (smoother) {
-      smoother.destroy(); // Destroy existing instance if it exists
-    }
   }
 }
 
-// Debounced version of handleScrollSmoother
+function updateOnResize() {
+  // Check if smoother instance exists and then update it
+  if (smoother && smoother.update) {
+    smoother.update();
+  }
+}
+
+// Debounce function
 function debounce(func, wait) {
   let timeout;
   return function () {
-    const context = this,
-      args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(context, args), wait);
+    timeout = setTimeout(func, wait);
   };
 }
 
-const debouncedHandleScrollSmoother = debounce(handleScrollSmoother, 250);
+// Initialize ScrollSmoother on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", initializeScrollSmoother);
 
-// Run on window resize
-window.addEventListener("resize", debouncedHandleScrollSmoother);
+// Add debounced resize event listener
+window.addEventListener("resize", debounce(updateOnResize, 250));
 
 CustomEase.create("smooth", "M0,0 C0.38,0.005 0.215,1 1,1");
 
