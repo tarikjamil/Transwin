@@ -115,13 +115,16 @@ pageLoad();
 const scrollSpeed = 50; // pixels per second, adjust as needed
 
 function updateScrollingSpeed() {
-  document.querySelectorAll(".is--scrolling").forEach((element) => {
-    const scrollWidth = element.offsetWidth;
-    const duration = scrollWidth / scrollSpeed; // seconds
+  // Select elements with either 'is--scrolling' or 'is--scrolling2' class
+  document
+    .querySelectorAll(".is--scrolling, .is--scrolling2")
+    .forEach((element) => {
+      const scrollWidth = element.offsetWidth;
+      const duration = scrollWidth / scrollSpeed; // seconds
 
-    element.style.setProperty("--scroll-width", `${scrollWidth}px`);
-    element.style.animationDuration = `${duration}s`;
-  });
+      element.style.setProperty("--scroll-width", `${scrollWidth}px`);
+      element.style.animationDuration = `${duration}s`;
+    });
 }
 
 // Call initially
