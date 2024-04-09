@@ -175,22 +175,26 @@ gsap.utils.toArray("[animation=split-fade]").forEach((container) => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-  const counterElements = document.querySelectorAll('.span--text');
-  const observer = new Intersection Observer(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const targetNumber = parseInt(entry.target.textContent, 10);
-        entry.target.textContent = '0'; // Initialize to 0 when the element comes into view
-        animateNumber(entry.target, 0, targetNumber, 1000); // Animate over 1000 milliseconds
-        observer.unobserve(entry.target); // Optionally, stop observing after animating
-      }
-    });
-  }, {
-    threshold: 0.5 // Trigger when half of the element is visible
-  });
+document.addEventListener("DOMContentLoaded", function () {
+  const counterElements = document.querySelectorAll(".span--text");
 
-  counterElements.forEach(el => observer.observe(el));
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const targetNumber = parseInt(entry.target.textContent, 10);
+          entry.target.textContent = "0"; // Reset the text to 0 on first appear
+          animateNumber(entry.target, 0, targetNumber, 1000); // Duration 1000 milliseconds
+          observer.unobserve(entry.target); // Stop observing after animation
+        }
+      });
+    },
+    {
+      threshold: 0.5, // Trigger when 50% of the element is visible
+    }
+  );
+
+  counterElements.forEach((el) => observer.observe(el));
 
   function animateNumber(element, start, end, duration) {
     let startTime = null;
@@ -198,7 +202,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function animation(currentTime) {
       if (!startTime) startTime = currentTime;
       const elapsedTime = currentTime - startTime;
-      const nextNumber = Math.min(Math.floor(start + (end - start) * (elapsedTime / duration)), end);
+      const nextNumber = Math.min(
+        Math.floor(start + (end - start) * (elapsedTime / duration)),
+        end
+      );
 
       element.textContent = nextNumber;
 
@@ -210,4 +217,3 @@ document.addEventListener("DOMContentLoaded", function() {
     requestAnimationFrame(animation);
   }
 });
-
